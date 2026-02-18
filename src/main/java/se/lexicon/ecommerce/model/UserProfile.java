@@ -17,14 +17,17 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column ()
+    @Column (nullable = false, length = 100)
     private String nickname;
 
-    @Column
+    @Column (nullable = false, length = 100)
     private String phoneNumber;
 
-    @Column
+    @Column (length = 500)
     private String bio;
+
+    @OneToOne (mappedBy = "userProfile")
+    private Customer customer;
 
     public UserProfile() {
     }
