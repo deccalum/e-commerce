@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a customer account and its related profile and address data.
+ */
 @Getter
 @Setter
 @Entity
@@ -40,6 +43,9 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
+    /**
+     * Initializes the creation timestamp before first persistence.
+     */
     @PrePersist
     private void prePersist() {
         if (createdAt == null) {

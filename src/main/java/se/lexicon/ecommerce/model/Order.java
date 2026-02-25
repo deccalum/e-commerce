@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a customer purchase order with status and line items.
+ */
 @Setter
 @Getter
 @Entity
@@ -30,6 +33,9 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
+    /**
+     * Enforces the business rule that an order must contain at least one item.
+     */
     @PrePersist
     @PreUpdate
     private void validateOrderItems() {

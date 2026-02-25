@@ -1,29 +1,28 @@
 package se.lexicon.ecommerce.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * Represents a postal address linked to a customer.
+ */
 @Getter
 @Setter
-@Builder
-
 @Entity
-@Table (name = "addresses")
+@Table(name = "addresses")
 public class Address {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String street;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String city;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String zipCode;
 }

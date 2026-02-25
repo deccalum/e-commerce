@@ -1,6 +1,5 @@
 package se.lexicon.ecommerce.model;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +8,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a date-bound promotion that can apply to multiple products.
+ */
 @Getter
 @Setter
 @Entity
@@ -17,7 +19,7 @@ public class Promotion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @Column(nullable = false, unique = true, length = 100)
     private String code;

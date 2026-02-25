@@ -1,7 +1,6 @@
 package se.lexicon.ecommerce.model;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +9,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Represents a sellable catalog product with category, images, and promotions.
+ */
 @Getter
 @Setter
 @Entity
@@ -17,7 +19,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigInteger id;
+    private Long id;
 
     @Column(nullable = false, length = 150)
     private String name;
