@@ -1,4 +1,4 @@
-package lexicon.se.ecommerce;
+package se.lexicon.ecommerce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
