@@ -1,6 +1,7 @@
 package se.lexicon.ecommerce.model;
 
 import java.time.Instant;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,8 +26,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    /*
-    order items
-     */
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 
 }

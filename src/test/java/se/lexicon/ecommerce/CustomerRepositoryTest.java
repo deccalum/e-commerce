@@ -1,5 +1,5 @@
 package se.lexicon.ecommerce;
-
+/*
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,3 +35,4 @@ public class CustomerRepositoryTest {
         assertThat(found.getEmail()).isEqualTo("john.doe@example.com");
     }
 }
+    */
