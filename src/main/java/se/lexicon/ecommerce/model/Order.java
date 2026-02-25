@@ -14,6 +14,7 @@ import lombok.Setter;
 public class Order {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -26,7 +27,15 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
+
+    @PrePersist
+    @PreUpdate
+    private void validateOrderItems() {
+        if (orderItems == null || orderItems.isEmpty()) {
+            throw new IllegalStateException("Order must contain at least one order item.");
+        }
+    }
 
 }

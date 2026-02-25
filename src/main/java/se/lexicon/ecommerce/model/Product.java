@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import se.lexicon.ecommerce.model.Product_Promotion;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -42,5 +41,5 @@ public class Product {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "products_promotions", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "promotion_id"))
-    private Set<Product_Promotion> promotions = new HashSet<>();
+    private Set<Promotion> promotions = new HashSet<>();
 }
