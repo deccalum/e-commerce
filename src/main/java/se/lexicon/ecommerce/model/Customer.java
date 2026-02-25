@@ -3,7 +3,11 @@ package se.lexicon.ecommerce.model;
 import java.time.Instant;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "customers")
 public class Customer {
