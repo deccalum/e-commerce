@@ -1,7 +1,6 @@
 package se.lexicon.ecommerce.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 
 @Entity
 @Table (name = "addresses")
@@ -28,7 +26,4 @@ public class Address {
 
     @Column (nullable = false)
     private String zipCode;
-
-    public Address() {
-    }
 }
