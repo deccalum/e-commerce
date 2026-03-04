@@ -9,7 +9,8 @@ import se.lexicon.ecommerce.model.Order;
 import se.lexicon.ecommerce.model.OrderItem;
 
 /**
- * Mapper interface for converting between Order entities and their corresponding DTOs.
+ * Mapper interface for converting between Order entities and their
+ * corresponding DTOs.
  * Utilizes MapStruct for automatic implementation generation.
  */
 @Mapper(componentModel = "spring")
@@ -24,8 +25,8 @@ public interface OrderMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orderDate", ignore = true)
-    @Mapping(target = "status", ignore = true) // set in service
-    @Mapping(target = "customer.id", source = "customerId")
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "customer", ignore = true)
     @Mapping(target = "orderItems", source = "orderItems")
     Order toEntity(OrderRequest request);
 
@@ -35,8 +36,8 @@ public interface OrderMapper {
     OrderResponse.OrderItemResponse toResponse(OrderItem item);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "order", ignore = true) // set in service
-    @Mapping(target = "priceAtPurchase", ignore = true) // set in service
-    @Mapping(target = "product.id", source = "productId")
+    @Mapping(target = "order", ignore = true)
+    @Mapping(target = "priceAtPurchase", ignore = true)
+    @Mapping(target = "product", ignore = true)
     OrderItem toEntity(OrderRequest.OrderItemRequest item);
 }
