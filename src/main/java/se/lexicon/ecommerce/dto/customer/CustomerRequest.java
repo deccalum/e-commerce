@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Size;
  * Password is validated for basic strength and must be hashed in the service
  * layer before persistence.
  */
+
 public record CustomerRequest(
                 @NotBlank @Size(max = 100) String firstName,
                 @NotBlank @Size(max = 100) String lastName,

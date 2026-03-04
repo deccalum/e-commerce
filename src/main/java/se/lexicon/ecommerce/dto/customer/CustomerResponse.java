@@ -7,5 +7,11 @@ public record CustomerResponse(
                 Long id,
                 String fullName,
                 String email,
-                String addressResponse) {
+                AddressResponse addressResponse) {
+
+        public record AddressResponse(
+                        String street,
+                        String city,
+                        String zipCode) {
+        }
 }
