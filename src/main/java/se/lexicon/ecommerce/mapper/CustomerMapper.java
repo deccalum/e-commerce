@@ -8,10 +8,10 @@ import se.lexicon.ecommerce.dto.customer.CustomerResponse;
 import se.lexicon.ecommerce.model.Customer;
 
 /**
- * Mapper interface for converting between Customer entities and their corresponding DTOs.
+ * Mapper interface for converting between Customer entities and their
+ * corresponding DTOs.
  * Utilizes MapStruct for automatic implementation generation.
  */
-
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 

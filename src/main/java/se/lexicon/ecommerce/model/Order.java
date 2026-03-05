@@ -30,7 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor  
+@NoArgsConstructor
 @AllArgsConstructor
 public class Order {
 
@@ -57,9 +57,10 @@ public class Order {
     // @PrePersist
     // @PreUpdate
     // private void validateOrderItems() {
-    //     if (orderItems == null || orderItems.isEmpty()) {
-    //         throw new IllegalStateException("Order must contain at least one order item.");
-    //     }
+    // if (orderItems == null || orderItems.isEmpty()) {
+    // throw new IllegalStateException("Order must contain at least one order
+    // item.");
+    // }
     // }
 
 }

@@ -1,13 +1,13 @@
 package se.lexicon.ecommerce.repository;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import se.lexicon.ecommerce.model.Customer;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Repository for {@link Customer} persistence and customer-focused queries.

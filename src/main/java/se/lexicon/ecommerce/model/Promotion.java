@@ -34,10 +34,10 @@ public class Promotion {
 
     @Column(nullable = false)
     private String discountType;
-    
+
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal discountValue;
-    
+
     @Column(length = 500)
     private String description;
 

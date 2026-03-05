@@ -3,6 +3,7 @@ package se.lexicon.ecommerce.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import se.lexicon.ecommerce.dto.order.OrderItemResponse;
 import se.lexicon.ecommerce.dto.order.OrderRequest;
 import se.lexicon.ecommerce.dto.order.OrderResponse;
 import se.lexicon.ecommerce.model.Order;
@@ -33,7 +34,7 @@ public interface OrderMapper {
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productName", source = "product.name")
     @Mapping(target = "price", source = "priceAtPurchase")
-    OrderResponse.OrderItemResponse toResponse(OrderItem item);
+    OrderItemResponse toResponse(OrderItem item);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "order", ignore = true)

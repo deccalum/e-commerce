@@ -13,11 +13,11 @@ import jakarta.validation.constraints.Size;
  */
 
 public record CustomerRequest(
-                @NotBlank @Size(max = 100) String firstName,
-                @NotBlank @Size(max = 100) String lastName,
-                @NotBlank @Size(max = 150) @Email String email,
-                @NotBlank @Size(min = 8, max = 72) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).+$") String password,
-                @NotBlank String street,
-                @NotBlank String city,
-                @NotBlank String zipCode) {
+        @NotBlank @Size(max = 100) String firstName,
+        @NotBlank @Size(max = 100) String lastName,
+        @NotBlank @Size(max = 150) @Email String email,
+        @NotBlank @Size(min = 8, max = 72) @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).+$") String password,
+        @NotBlank String street,
+        @NotBlank String city,
+        @NotBlank String zipCode) {
 }

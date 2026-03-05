@@ -20,7 +20,8 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
+            ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.productMapper = productMapper;
@@ -46,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse searchByName(String name) {
-         return Optional.ofNullable(name)
+        return Optional.ofNullable(name)
                 .filter(n -> !n.isBlank())
                 .map(productRepository::findByNameContainingIgnoreCase)
                 .filter(list -> !list.isEmpty())
