@@ -24,6 +24,16 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     List<Promotion> findActiveOnDate(@Param("date") LocalDate date);
 
     /**
+     * Finds promotions active for a product on a specific date.
+     *
+     * @param productId product id
+     * @param date      date to evaluate
+     * @return promotions active for the product on the date
+     */
+    @Query("SELECT p FROM Promotion p JOIN p.products prod WHERE prod.id = :productId AND p.startDate <= :date AND (p.endDate IS NULL OR p.endDate >= :date)")
+    List<Promotion> findActivePromotionsByProductId(@Param("productId") Long productId, @Param("date") LocalDate date);
+
+    /**
      * Finds a promotion by exact code.
      *
      * @param code promotion code

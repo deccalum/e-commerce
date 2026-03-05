@@ -2,8 +2,10 @@ package se.lexicon.ecommerce.repository;
 
 import java.time.Instant;
 import java.util.List;
+
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import se.lexicon.ecommerce.model.Order;
 import se.lexicon.ecommerce.model.OrderStatus;
 

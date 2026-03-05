@@ -21,6 +21,7 @@ public record OrderResponse(
                         Long productId,
                         String productName,
                         BigDecimal price,
-                        Integer quantity) {
-        }
+                        Integer quantity,
+                        String appliedPromoCode,
+                        BigDecimal discountAmount) {}
 }
