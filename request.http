@@ -1,0 +1,189 @@
+@baseUrl = http://localhost:9090
+
+### Home redirect (optional quick check)
+GET {{baseUrl}}/
+
+### Swagger UI availability check
+GET {{baseUrl}}/swagger-ui.html
+
+### H2 console availability check
+GET {{baseUrl}}/h2-console
+
+############################################################
+### Categories
+############################################################
+
+### Create category (201)
+POST {{baseUrl}}/api/v1/categories
+Content-Type: application/json
+
+{
+	"name": "Electronics"
+}
+
+### Create another category (201)
+POST {{baseUrl}}/api/v1/categories
+Content-Type: application/json
+
+{
+	"name": "Home"
+}
+
+### List categories (200)
+GET {{baseUrl}}/api/v1/categories
+
+### Duplicate category (expect 409)
+POST {{baseUrl}}/api/v1/categories
+Content-Type: application/json
+
+{
+	"name": "Electronics"
+}
+
+### Invalid category (expect 400)
+POST {{baseUrl}}/api/v1/categories
+Content-Type: application/json
+
+{
+	"name": ""
+}
+
+############################################################
+### Customers
+############################################################
+
+### Create customer (201)
+POST {{baseUrl}}/api/v1/customers
+Content-Type: application/json
+
+{
+	"firstName": "Anna",
+	"lastName": "Svensson",
+	"email": "anna@example.com",
+	"password": "StrongP@ss1",
+	"street": "Main Street 1",
+	"city": "Stockholm",
+	"zipCode": "11122"
+}
+
+### Create second customer (201)
+POST {{baseUrl}}/api/v1/customers
+Content-Type: application/json
+
+{
+	"firstName": "John",
+	"lastName": "Doe",
+	"email": "john.doe@example.com",
+	"password": "Another@Pass2",
+	"street": "Baker Street 10",
+	"city": "Gothenburg",
+	"zipCode": "22233"
+}
+
+### Get customer by id (200)
+GET {{baseUrl}}/api/v1/customers/1
+
+### Update customer by id (200)
+PUT {{baseUrl}}/api/v1/customers/1
+Content-Type: application/json
+
+{
+	"firstName": "Anna",
+	"lastName": "Larsson",
+	"email": "anna@example.com",
+	"password": "StrongP@ss1",
+	"street": "Main Street 99",
+	"city": "Stockholm",
+	"zipCode": "11122"
+}
+
+### Customer not found (expect 404)
+GET {{baseUrl}}/api/v1/customers/99999
+
+### Invalid customer payload (expect 400)
+POST {{baseUrl}}/api/v1/customers
+Content-Type: application/json
+
+{
+	"firstName": "",
+	"lastName": "",
+	"email": "not-an-email",
+	"password": "weak",
+	"street": "",
+	"city": "",
+	"zipCode": ""
+}
+
+############################################################
+### Products
+############################################################
+
+### Create product in category 1 (201)
+POST {{baseUrl}}/api/v1/products
+Content-Type: application/json
+
+{
+	"name": "Mechanical Keyboard",
+	"price": 1499.00,
+	"categoryId": 1
+}
+
+### Create second product in category 1 (201)
+POST {{baseUrl}}/api/v1/products
+Content-Type: application/json
+
+{
+	"name": "Gaming Mouse",
+	"price": 699.00,
+	"categoryId": 1
+}
+
+### List products (200)
+GET {{baseUrl}}/api/v1/products
+
+### Search product by name (200)
+GET {{baseUrl}}/api/v1/products/search?name=keyboard
+
+### Product search miss (expect 404 from service)
+GET {{baseUrl}}/api/v1/products/search?name=does-not-exist
+
+### Invalid product payload (expect 400)
+POST {{baseUrl}}/api/v1/products
+Content-Type: application/json
+
+{
+	"name": "",
+	"price": -10,
+	"categoryId": 0
+}
+
+############################################################
+### Orders
+############################################################
+
+### Place order (201)
+POST {{baseUrl}}/api/v1/orders
+Content-Type: application/json
+
+{
+	"customerId": 1,
+	"orderItems": [
+		{
+			"productId": 1,
+			"quantity": 2
+		},
+		{
+			"productId": 2,
+			"quantity": 1
+		}
+	]
+}
+
+### Invalid order payload (expect 400)
+POST {{baseUrl}}/api/v1/orders
+Content-Type: application/json
+
+{
+	"customerId": 0,
+	"orderItems": []
+}
