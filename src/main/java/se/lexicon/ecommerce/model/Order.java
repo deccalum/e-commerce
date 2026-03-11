@@ -3,6 +3,8 @@ package se.lexicon.ecommerce.model;
 import java.time.Instant;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +19,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +30,6 @@ import lombok.Setter;
 @Table(name = "orders")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
@@ -42,25 +42,13 @@ public class Order {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @CreationTimestamp
     @Column
     private Instant orderDate;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.CREATED;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
-
-    /**
-     * Enforces the business rule that an order must contain at least one item.
-     */
-    // @PrePersist
-    // @PreUpdate
-    // private void validateOrderItems() {
-    // if (orderItems == null || orderItems.isEmpty()) {
-    // throw new IllegalStateException("Order must contain at least one order
-    // item.");
-    // }
-    // }
-
 }

@@ -1,9 +1,9 @@
-package se.lexicon.ecommerce.dto.customer;
+package se.lexicon.ecommerce.dto.response;
 
 /**
  * Response DTO used to expose customer data to API clients.
  */
-public record CustomerResponse(
+public record CustomerResponseDTO(
         Long id,
         String fullName,
         String email,

@@ -3,8 +3,9 @@ package se.lexicon.ecommerce.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import se.lexicon.ecommerce.dto.customer.CustomerRequest;
-import se.lexicon.ecommerce.dto.customer.CustomerResponse;
+import se.lexicon.ecommerce.dto.request.CustomerRequestDTO;
+import se.lexicon.ecommerce.dto.response.CustomerResponseDTO;
+import se.lexicon.ecommerce.model.Address;
 import se.lexicon.ecommerce.model.Customer;
 
 /**
@@ -20,7 +21,7 @@ public interface CustomerMapper {
     @Mapping(source = "address.street", target = "addressResponse.street")
     @Mapping(source = "address.city", target = "addressResponse.city")
     @Mapping(source = "address.zipCode", target = "addressResponse.zipCode")
-    CustomerResponse toResponse(Customer customer);
+    CustomerResponseDTO toResponse(Customer customer);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -29,5 +30,8 @@ public interface CustomerMapper {
     @Mapping(source = "street", target = "address.street")
     @Mapping(source = "city", target = "address.city")
     @Mapping(source = "zipCode", target = "address.zipCode")
-    Customer toEntity(CustomerRequest request);
+    Customer toEntity(CustomerRequestDTO request);
+
+    // MapStruct will generate this mapping for nested Address -> AddressResponse
+    CustomerResponseDTO.AddressResponse addressToAddressResponse(Address address);
 }

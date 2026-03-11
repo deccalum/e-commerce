@@ -3,9 +3,9 @@ package se.lexicon.ecommerce.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import se.lexicon.ecommerce.dto.order.OrderItemResponse;
-import se.lexicon.ecommerce.dto.order.OrderRequest;
-import se.lexicon.ecommerce.dto.order.OrderResponse;
+import se.lexicon.ecommerce.dto.request.OrderRequestDTO;
+import se.lexicon.ecommerce.dto.response.OrderItemResponseDTO;
+import se.lexicon.ecommerce.dto.response.OrderResponseDTO;
 import se.lexicon.ecommerce.model.Order;
 import se.lexicon.ecommerce.model.OrderItem;
 
@@ -22,23 +22,27 @@ public interface OrderMapper {
     @Mapping(target = "orderStatus", source = "status")
     @Mapping(target = "addressResponse", expression = "java(order.getCustomer().getAddress().getStreet() + \", \" + order.getCustomer().getAddress().getCity() + \", \" + order.getCustomer().getAddress().getZipCode())")
     @Mapping(target = "orderItems", source = "orderItems")
-    OrderResponse toResponse(Order order);
+    OrderResponseDTO toResponse(Order order);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orderDate", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "customer", ignore = true)
     @Mapping(target = "orderItems", source = "orderItems")
-    Order toEntity(OrderRequest request);
+    Order toEntity(OrderRequestDTO request);
 
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productName", source = "product.name")
     @Mapping(target = "price", source = "priceAtPurchase")
-    OrderItemResponse toResponse(OrderItem item);
+    // @Mapping(target = "appliedPromoCode", source = "appliedPromoCode")
+    @Mapping(target = "appliedPromoCode", ignore = true) 
+    // @Mapping(target = "discountAmount", source = "discountAmount")
+    @Mapping(target = "discountAmount", ignore = true)
+    OrderItemResponseDTO toResponse(OrderItem item);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "order", ignore = true)
     @Mapping(target = "priceAtPurchase", ignore = true)
     @Mapping(target = "product", ignore = true)
-    OrderItem toEntity(OrderRequest.OrderItemRequest item);
+    OrderItem toEntity(OrderRequestDTO.OrderItemRequest item);
 }

@@ -1,4 +1,4 @@
-package se.lexicon.ecommerce.dto.product;
+package se.lexicon.ecommerce.dto.request;
 
 import java.math.BigDecimal;
 
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Size;
 /**
  * Request DTO used to create or update product data.
  */
-public record ProductRequest(
+public record ProductRequestDTO(
         @NotBlank @Size(max = 150) String name,
         @NotNull @Positive @Digits(integer = 8, fraction = 2) @DecimalMin("0.0") BigDecimal price,
         @NotNull @Positive Long categoryId) {

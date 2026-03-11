@@ -1,4 +1,4 @@
-package se.lexicon.ecommerce;
+package se.lexicon.ecommerce.runner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,12 +8,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
+import se.lexicon.ecommerce.dto.request.OrderRequestDTO;
 import se.lexicon.ecommerce.model.Category;
 import se.lexicon.ecommerce.model.Product;
 import se.lexicon.ecommerce.model.Promotion;
 import se.lexicon.ecommerce.repository.CategoryRepository;
 import se.lexicon.ecommerce.repository.ProductRepository;
 import se.lexicon.ecommerce.repository.PromotionRepository;
+import se.lexicon.ecommerce.service.OrderService;
+import se.lexicon.ecommerce.service.OrderServiceImpl;
 
 @Component
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package se.lexicon.ecommerce.dto.order;
+package se.lexicon.ecommerce.dto.request;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Positive;
 /**
  * Request DTO used to place an order.
  */
-public record OrderRequest(
+public record OrderRequestDTO(
         @NotNull @Positive Long customerId,
         @NotEmpty List<@Valid OrderItemRequest> orderItems) {
     /**

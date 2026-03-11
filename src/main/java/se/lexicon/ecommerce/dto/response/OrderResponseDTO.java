@@ -1,4 +1,4 @@
-package se.lexicon.ecommerce.dto.order;
+package se.lexicon.ecommerce.dto.response;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import se.lexicon.ecommerce.model.OrderStatus;
 /**
  * Response DTO used to expose order data to API clients.
  */
-public record OrderResponse(
+public record OrderResponseDTO(
         Long orderId,
         String customerName,
         OrderStatus orderStatus,
         String addressResponse,
-        List<OrderItemResponse> orderItems) {
+        List<OrderItemResponseDTO> orderItems) {
 }
 

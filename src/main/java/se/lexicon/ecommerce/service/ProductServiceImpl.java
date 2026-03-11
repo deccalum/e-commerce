@@ -5,30 +5,26 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import se.lexicon.ecommerce.dto.product.ProductRequest;
-import se.lexicon.ecommerce.dto.product.ProductResponse;
+import se.lexicon.ecommerce.dto.request.ProductRequestDTO;
+import se.lexicon.ecommerce.dto.response.ProductResponseDTO;
 import se.lexicon.ecommerce.exception.DuplicateResourceException;
 import se.lexicon.ecommerce.exception.InvalidRequestException;
 import se.lexicon.ecommerce.exception.ResourceNotFoundException;
 import se.lexicon.ecommerce.mapper.ProductMapper;
-import se.lexicon.ecommerce.repository.CategoryRepository;
 import se.lexicon.ecommerce.repository.ProductRepository;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,
-            ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
         this.productMapper = productMapper;
     }
 
     @Override
-    public ProductResponse create(ProductRequest request) {
+    public ProductResponseDTO create(ProductRequestDTO request) {
         return Optional.ofNullable(request)
                 .map(productMapper::toEntity)
                 .map(productRepository::save)
@@ -39,14 +35,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> findAll() {
+    public List<ProductResponseDTO> findAll() {
         return productRepository.findAll().stream()
                 .map(productMapper::toResponse)
                 .toList();
     }
 
     @Override
-    public ProductResponse searchByName(String name) {
+    public ProductResponseDTO searchByName(String name) {
         return Optional.ofNullable(name)
                 .filter(n -> !n.isBlank())
                 .map(productRepository::findByNameContainingIgnoreCase)

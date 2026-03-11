@@ -1,4 +1,4 @@
-package se.lexicon.ecommerce.dto.customer;
+package se.lexicon.ecommerce.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Size;
  * layer before persistence.
  */
 
-public record CustomerRequest(
+public record CustomerRequestDTO(
         @NotBlank @Size(max = 100) String firstName,
         @NotBlank @Size(max = 100) String lastName,
         @NotBlank @Size(max = 150) @Email String email,

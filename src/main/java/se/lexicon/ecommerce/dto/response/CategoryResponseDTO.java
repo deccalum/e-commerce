@@ -1,9 +1,9 @@
-package se.lexicon.ecommerce.dto.product;
+package se.lexicon.ecommerce.dto.response;
 
 /**
  * Response DTO used to expose category data to API clients.
  */
-public record CategoryResponse(
+public record CategoryResponseDTO(
         Long id,
         String name) {
 }
