@@ -58,3 +58,20 @@ What `@PostMapping` does exactly:
 - Response:
   - Uses `ResponseEntity.ok(response)`.
   - Returns HTTP `200 OK` with updated customer data.
+
+### CategoryServiceImpl Notes
+
+```java
+Optional.of(request.getName())       // 1. wrap the raw name String (not the whole DTO)
+    .map(String::trim)               // 2. remove leading/trailing whitespace
+    .filter(name -> !name.isBlank()) // 3. if blank after trim → empty Optional → orElseThrow
+    .filter(name -> !categoryRepository.existsByNameIgnoreCase(name)) // 4. if duplicate → empty Optional → orElseThrow
+    .map(name -> {                   // 5. build Category entity
+        Category c = new Category();
+        c.setName(name);
+        return c;
+    })
+    .map(categoryRepository::save)   // 6. persist to DB, returns saved entity with generated ID
+    .map(saved -> new CategoryResponseDTO(saved.getId(), saved.getName())) // 7. map to response
+    .orElseThrow(() -> new DuplicateResourceException(...)); // if any filter returned empty
+```
