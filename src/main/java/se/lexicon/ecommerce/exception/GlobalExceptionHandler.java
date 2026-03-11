@@ -11,6 +11,18 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+/**
+ * Global exception handler.
+ * Handles various exceptions thrown by the application and returns appropriate
+ * HTTP responses.
+ * 
+ * @ExceptionHandler methods handle specific exceptions and return a
+ *                   ResponseEntity with a consistent error body.
+ * 
+ *                   build() is a helper method to create the error response
+ *                   body with a timestamp, status code, error reason, and
+ *                   message.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

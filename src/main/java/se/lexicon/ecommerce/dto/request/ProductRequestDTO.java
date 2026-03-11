@@ -10,7 +10,13 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 /**
- * Request DTO used to create or update product data.
+ * Request DTO for creating or updating {@link se.lexicon.ecommerce.model.Product}
+ * data and later mapping to
+ * {@link se.lexicon.ecommerce.dto.response.ProductResponseDTO}.
+ *
+ * @param name product name
+ * @param price product price
+ * @param categoryId related category id
  */
 public record ProductRequestDTO(
         @NotBlank @Size(max = 150) String name,

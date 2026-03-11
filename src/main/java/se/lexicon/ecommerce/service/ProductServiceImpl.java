@@ -11,8 +11,13 @@ import se.lexicon.ecommerce.exception.DuplicateResourceException;
 import se.lexicon.ecommerce.exception.InvalidRequestException;
 import se.lexicon.ecommerce.exception.ResourceNotFoundException;
 import se.lexicon.ecommerce.mapper.ProductMapper;
+import se.lexicon.ecommerce.model.Product;
 import se.lexicon.ecommerce.repository.ProductRepository;
 
+/**
+ * Default {@link ProductService} implementation for
+ * {@link Product} operations.
+ */
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -23,6 +28,12 @@ public class ProductServiceImpl implements ProductService {
         this.productMapper = productMapper;
     }
 
+    /**
+     * Creates and stores a product from request input.
+     *
+        * @param request input {@link ProductRequestDTO}
+        * @return created {@link ProductResponseDTO}
+     */
     @Override
     public ProductResponseDTO create(ProductRequestDTO request) {
         return Optional.ofNullable(request)
@@ -34,6 +45,11 @@ public class ProductServiceImpl implements ProductService {
                         : new DuplicateResourceException("Product with name already exists: " + request.name()));
     }
 
+    /**
+     * Lists all products.
+     *
+        * @return all products as {@link ProductResponseDTO} values
+     */
     @Override
     public List<ProductResponseDTO> findAll() {
         return productRepository.findAll().stream()
@@ -41,6 +57,12 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+    /**
+     * Finds the first product matching a name fragment.
+     *
+     * @param name search text
+        * @return matching {@link ProductResponseDTO}
+     */
     @Override
     public ProductResponseDTO searchByName(String name) {
         return Optional.ofNullable(name)

@@ -19,9 +19,8 @@ import se.lexicon.ecommerce.repository.ProductRepository;
 import se.lexicon.ecommerce.repository.PromotionRepository;
 
 /**
- * Service implementation for managing orders.
- * Orchestrates order placement, including customer and product validation,
- * price capture, and discount application.
+ * Default {@link OrderService} implementation for
+ * {@link Order} workflows.
  */
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -43,18 +42,20 @@ public class OrderServiceImpl implements OrderService {
         this.promotionRepository = promotionRepository;
         this.orderMapper = orderMapper;
     }
+
     /**
-     * Helper method to build an OrderItem entity from an OrderItemRequest DTO.
-     * @param itemReq the order item request DTO
-     * @param order the parent order entity
-     * @return the constructed OrderItem entity
-     * @throws IllegalArgumentException if the product is not found
+     * Builds an {@link OrderItem} from an item request and parent order.
+     *
+     * @param itemReq source {@link OrderItemRequest}
+     * @param order parent {@link Order}
+     * @return constructed order item
+     * @throws IllegalArgumentException if product is not found
      */
     private OrderItem buildOrderItem(OrderItemRequest itemReq, Order order) {
         Product product = productRepository.findById(itemReq.productId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Product not found: " + itemReq.productId()));
-                        // also check if quantity is valid
+
         return OrderItem.builder()
                 .product(product)
                 .quantity(itemReq.quantity())
@@ -64,10 +65,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Helper method to resolve a string status to an OrderStatus enum.
-     * @param status the string representation of the order status
-     * @return the corresponding OrderStatus enum value
-     * @throws IllegalArgumentException if the status is invalid
+     * Resolves text status to {@link OrderStatus}.
+     *
+     * @param status textual status
+     * @return matching enum value
+     * @throws IllegalArgumentException if status is invalid
      */
     private OrderStatus resolveStatus(String status) {
         try {
@@ -77,15 +79,12 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    
-    //--- Public service methods ---//
     /**
-     * Places a new order based on the provided order request DTO.
-     * Validates the request, captures product prices, and saves the order.
-     * @Transactional to ensure atomicity of the order placement process.
-     * @param request the order request DTO containing customer ID and order items
-     * @return the response DTO representing the placed order
-     * @throws IllegalArgumentException if the request is invalid or any entity is not found
+        * Places a new order and returns its mapped response.
+        *
+        * @param request input {@link OrderRequestDTO}
+        * @return placed order as {@link OrderResponseDTO}
+        * @throws IllegalArgumentException if request is invalid or references missing entities
      */
     @Transactional
     @Override
@@ -106,10 +105,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Finds an order by its ID.
-     * @param id the ID of the order
-     * @return the response DTO representing the found order
-     * @throws IllegalArgumentException if the order is not found
+        * Finds an order by id.
+        *
+        * @param id order id
+        * @return matching {@link OrderResponseDTO}
+        * @throws IllegalArgumentException if order is not found
      */
     @Override
     public OrderResponseDTO findById(Long id) {
@@ -121,11 +121,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Updates the status of an existing order.
-     * @param id the ID of the order to update
-     * @param status the new status to set
-     * @return the response DTO representing the updated order
-     * @throws IllegalArgumentException if the order is not found or the status is invalid
+        * Updates the status of an existing order.
+        *
+        * @param id order id
+        * @param status target status text
+        * @return updated {@link OrderResponseDTO}
+        * @throws IllegalArgumentException if order is not found or status is invalid
      */
     @Override
     public OrderResponseDTO updateOrderStatus(Long id, String status) {
@@ -140,9 +141,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * Cancels an existing order by setting its status to CANCELLED.
-     * @param id the ID of the order to cancel
-     * @throws IllegalArgumentException if the order is not found
+        * Cancels an existing order by setting status to CANCELLED.
+        *
+        * @param id order id
+        * @throws IllegalArgumentException if order is not found
      */
     @Override
     public void cancelOrder(Long id) {

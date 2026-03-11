@@ -12,6 +12,10 @@ import se.lexicon.ecommerce.exception.InvalidRequestException;
 import se.lexicon.ecommerce.model.Category;
 import se.lexicon.ecommerce.repository.CategoryRepository;
 
+/**
+ * Default {@link CategoryService} implementation for
+ * {@link Category} operations.
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -21,6 +25,14 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    /**
+     * Creates a category if the name is non-blank and not duplicated.
+     *
+     * @param request input {@link CategoryRequestDTO}
+     * @return created {@link CategoryResponseDTO}
+     * @throws InvalidRequestException if request is null
+     * @throws DuplicateResourceException if category already exists
+     */
     @Override
     public CategoryResponseDTO create(CategoryRequestDTO request) {
         if (request == null) {
@@ -42,6 +54,11 @@ public class CategoryServiceImpl implements CategoryService {
                         "Category already exists: " + request.name()));
     }
 
+    /**
+     * Lists all categories.
+     *
+     * @return all categories as {@link CategoryResponseDTO} values
+     */
     @Override
     public List<CategoryResponseDTO> findAll() {
         return categoryRepository.findAll().stream()

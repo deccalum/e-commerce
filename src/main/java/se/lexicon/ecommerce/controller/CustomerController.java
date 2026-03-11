@@ -15,6 +15,14 @@ import se.lexicon.ecommerce.dto.request.CustomerRequestDTO;
 import se.lexicon.ecommerce.dto.response.CustomerResponseDTO;
 import se.lexicon.ecommerce.service.CustomerService;
 
+/**
+ * Controller for managing customers.
+ * Provides endpoints for creating, retrieving, and updating customers.
+ * 
+ * @Valid triggers Jakarta Bean Validation on the bound DTO.
+ * @RequestBody binds the incoming JSON to the DTO and applies validation.
+ * @PathVariable binds path values like `{id}`.
+ */
 @RestController
 @RequestMapping("/api/v1/customers")
 public class CustomerController {
@@ -25,6 +33,12 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    /**
+     * Creates a customer.
+     *
+     * @param customerRequestDTO customer input payload
+     * @return created customer and HTTP 201
+     */
     @PostMapping
     public ResponseEntity<CustomerResponseDTO> register(
             @Valid @RequestBody CustomerRequestDTO customerRequestDTO) {
@@ -35,6 +49,12 @@ public class CustomerController {
                 .body(response);
     }
 
+    /**
+     * Retrieves a customer by id.
+     *
+     * @param id customer id
+     * @return customer data and HTTP 200
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CustomerResponseDTO> findById(@PathVariable Long id) {
         CustomerResponseDTO response = customerService.findById(id);
@@ -42,6 +62,13 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Updates an existing customer.
+     *
+     * @param id customer id
+     * @param customerRequestDTO updated customer payload
+     * @return updated customer and HTTP 200
+     */
     @PutMapping("/{id}")
     public ResponseEntity<CustomerResponseDTO> updateCustomer(@PathVariable Long id,
             @Valid @RequestBody CustomerRequestDTO customerRequestDTO) {

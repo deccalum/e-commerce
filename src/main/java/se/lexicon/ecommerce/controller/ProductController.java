@@ -16,6 +16,16 @@ import se.lexicon.ecommerce.dto.request.ProductRequestDTO;
 import se.lexicon.ecommerce.dto.response.ProductResponseDTO;
 import se.lexicon.ecommerce.service.ProductService;
 
+/**
+ * REST controller for {@link se.lexicon.ecommerce.model.Product} endpoints.
+ * Uses {@link ProductRequestDTO} for input and {@link ProductResponseDTO}
+ * for output.
+ * 
+ * @RequestParam binds query parameters like `?name=foo`.
+ * @Valid triggers Jakarta Bean Validation on the bound DTO.
+ * @RequestBody binds the incoming JSON to the DTO and applies validation.
+ * 
+ */
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {
@@ -26,6 +36,12 @@ public class ProductController {
         this.productService = productService;
     }
 
+    /**
+     * Creates a product.
+     *
+        * @param productRequestDTO input {@link ProductRequestDTO}
+        * @return created {@link ProductResponseDTO} and HTTP 201
+     */
     @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(
             @Valid @RequestBody ProductRequestDTO productRequestDTO) {
@@ -36,6 +52,11 @@ public class ProductController {
                 .body(response);
     }
 
+    /**
+     * Lists all products.
+     *
+        * @return list of {@link ProductResponseDTO} and HTTP 200
+     */
     @GetMapping
     public ResponseEntity<List<ProductResponseDTO>> findAll() {
         List<ProductResponseDTO> response = productService.findAll();
@@ -43,6 +64,12 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Searches products by name text.
+     *
+     * @param name name or partial name
+        * @return matching {@link ProductResponseDTO} and HTTP 200
+     */
     @GetMapping("/search")
     public ResponseEntity<ProductResponseDTO> searchByName(@RequestParam String name) {
         ProductResponseDTO response = productService.searchByName(name);

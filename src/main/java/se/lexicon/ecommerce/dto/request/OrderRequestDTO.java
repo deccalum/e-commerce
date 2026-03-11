@@ -9,13 +9,21 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 /**
- * Request DTO used to place an order.
+ * Request DTO for placing an {@link se.lexicon.ecommerce.model.Order},
+ * mapped later to {@link se.lexicon.ecommerce.dto.response.OrderResponseDTO}.
+ *
+ * @param customerId customer placing the order
+ * @param orderItems requested order items
  */
 public record OrderRequestDTO(
         @NotNull @Positive Long customerId,
         @NotEmpty List<@Valid OrderItemRequest> orderItems) {
+
     /**
-     * Request DTO used to describe each item in an order.
+         * Nested request DTO for one order line item.
+         *
+         * @param productId product id to purchase
+         * @param quantity requested quantity
      */
     public record OrderItemRequest(
             @NotNull @Positive Long productId,

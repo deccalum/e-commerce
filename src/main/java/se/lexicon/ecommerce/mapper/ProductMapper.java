@@ -8,16 +8,28 @@ import se.lexicon.ecommerce.dto.response.ProductResponseDTO;
 import se.lexicon.ecommerce.model.Product;
 
 /**
- * Mapper interface for converting between Product entities and their
- * corresponding DTOs.
- * Utilizes MapStruct for automatic implementation generation.
+ * Mapper for converting between {@link Product}, {@link ProductRequestDTO},
+ * and {@link ProductResponseDTO}.
+ * Uses MapStruct for implementation generation.
  */
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
 
+    /**
+     * Maps a {@link Product} entity to a {@link ProductResponseDTO}.
+     *
+     * @param product source entity
+     * @return mapped response DTO
+     */
     @Mapping(target = "categoryName", source = "category.name")
     ProductResponseDTO toResponse(Product product);
 
+    /**
+     * Maps a {@link ProductRequestDTO} to a {@link Product} entity.
+     *
+     * @param request source request DTO
+     * @return mapped product entity
+     */
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "imageUrl", ignore = true)
     @Mapping(target = "imageUrls", ignore = true)

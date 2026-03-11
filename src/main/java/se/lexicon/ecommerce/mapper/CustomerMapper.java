@@ -9,13 +9,19 @@ import se.lexicon.ecommerce.model.Address;
 import se.lexicon.ecommerce.model.Customer;
 
 /**
- * Mapper interface for converting between Customer entities and their
- * corresponding DTOs.
- * Utilizes MapStruct for automatic implementation generation.
+ * Mapper for converting between {@link Customer},
+ * {@link CustomerRequestDTO}, and {@link CustomerResponseDTO}.
+ * Uses MapStruct for implementation generation.
  */
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
+    /**
+     * Maps a {@link Customer} entity to a {@link CustomerResponseDTO}.
+     *
+     * @param customer source entity
+     * @return mapped response DTO
+     */
     @Mapping(target = "fullName", expression = "java(customer.getFirstName() + \" \" + customer.getLastName())")
     @Mapping(target = "email", source = "customer.email")
     @Mapping(source = "address.street", target = "addressResponse.street")
@@ -23,6 +29,12 @@ public interface CustomerMapper {
     @Mapping(source = "address.zipCode", target = "addressResponse.zipCode")
     CustomerResponseDTO toResponse(Customer customer);
 
+    /**
+     * Maps a {@link CustomerRequestDTO} to a {@link Customer} entity.
+     *
+     * @param request source request DTO
+     * @return mapped customer entity
+     */
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "userProfile", ignore = true)
@@ -32,6 +44,11 @@ public interface CustomerMapper {
     @Mapping(source = "zipCode", target = "address.zipCode")
     Customer toEntity(CustomerRequestDTO request);
 
-    // MapStruct will generate this mapping for nested Address -> AddressResponse
+    /**
+     * Maps nested {@link Address} to {@link CustomerResponseDTO.AddressResponse}.
+     *
+     * @param address source address
+     * @return mapped nested response object
+     */
     CustomerResponseDTO.AddressResponse addressToAddressResponse(Address address);
 }

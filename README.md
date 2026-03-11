@@ -1,77 +1,80 @@
-# Customer Controller Notes
+# PART 4
 
-This section documents the behavior of `CustomerController` in a clear format.
+## Submission Checklist
 
-## Class-Level Annotations
+- [x] **Git Branch**: Create a feature branch for Part 4 (e.g., `feature/rest-api`).
+- [x] **Controllers**: Implement the required REST controllers with appropriate Spring annotations.
+- [x] **Endpoints**: Create the required REST endpoints for CRUD operations and searching.
+- [x] **Exception Handling**: Implement a [GlobalExceptionHandler](src/main/java/se/lexicon/ecommerce/exception/GlobalExceptionHandler.java) for consistent error responses.
+- [x] **Validation**: Ensure that all incoming requests are properly validated.
+      _Verified in [ControllerValidationTest](src/test/java/se/lexicon/ecommerce/controller/ControllerValidationTest.java) with standalone MockMvc tests._
+- [x] **Verification**: Use a REST client (like Postman or curl) to test all API endpoints and verify the correct HTTP status codes.
+      _Used [VS Code REST Client extension](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) with [request.http](request.http) file._
+- [x] **Swagger UI**: Verify that the API documentation is accessible at `/swagger-ui.html`.
+- [x] **Commits**: Make descriptive commits for each major step.
+- [x] **Push**: Push the branch to GitHub and provide the link.
 
-- `@RestController`
-  - Tells Spring this class handles REST requests.
-  - Return values are serialized (typically JSON) and written to the HTTP response body.
+## REST Guide
 
-- `@RequestMapping("/api/v1/customers")`
-  - Sets the base path for all endpoints in this controller.
-  - Every method-level mapping is appended to this path.
+### Implemented Controllers
 
-## Dependency
+- [CustomerController](src/main/java/se/lexicon/ecommerce/controller/CustomerController.java)
+- [ProductController](src/main/java/se/lexicon/ecommerce/controller/ProductController.java)
+- [CategoryController](src/main/java/se/lexicon/ecommerce/controller/CategoryController.java)
+- [OrderController](src/main/java/se/lexicon/ecommerce/controller/OrderController.java)
 
-- `private final CustomerService customerService;`
-  - The controller delegates business logic to the service layer.
-  - The dependency is provided through constructor injection.
+### Endpoint Summary
 
-## Endpoints
+| Resource | Method | Path                               | Purpose                | Expected Status |
+| -------- | ------ | ---------------------------------- | ---------------------- | --------------- |
+| Customer | POST   | `/api/v1/customers`                | Create customer        | `201 Created`   |
+| Customer | GET    | `/api/v1/customers/{id}`           | Get customer by id     | `200 OK`        |
+| Customer | PUT    | `/api/v1/customers/{id}`           | Update customer        | `200 OK`        |
+| Product  | POST   | `/api/v1/products`                 | Create product         | `201 Created`   |
+| Product  | GET    | `/api/v1/products`                 | List products          | `200 OK`        |
+| Product  | GET    | `/api/v1/products/search?name=...` | Search product by name | `200 OK`        |
+| Category | POST   | `/api/v1/categories`               | Create category        | `201 Created`   |
+| Category | GET    | `/api/v1/categories`               | List categories        | `200 OK`        |
+| Order    | POST   | `/api/v1/orders`                   | Place order            | `201 Created`   |
 
-### 1. Create Customer
+### Core Spring REST Annotations
 
-- Annotation: `@PostMapping`
-- Final path: `POST /api/v1/customers`
-- Method parameter: `@Valid @RequestBody CustomerRequestDTO customerRequestDTO`
-  - `@RequestBody` maps incoming JSON to `CustomerRequestDTO`.
-  - `@Valid` triggers Jakarta Bean Validation on the DTO.
-- Response:
-  - Uses `ResponseEntity.status(HttpStatus.CREATED).body(response)`.
-  - Returns HTTP `201 Created` with the created customer data.
+- `@RestController`: marks the class as a REST endpoint provider and serializes return values as JSON.
+- `@RequestMapping("/base")`: sets the base path for all methods in that controller.
+- `@PostMapping`, `@GetMapping`, `@PutMapping`: map HTTP method + path to handler methods.
+- `@RequestBody`: binds JSON request body to a DTO.
+- `@Valid`: triggers Jakarta Bean Validation on the bound DTO.
+- `@PathVariable`: binds path values like `{id}`.
+- `@RequestParam`: binds query string values like `?name=keyboard`.
 
-What `@PostMapping` does exactly:
-
-- It maps this method to HTTP POST requests.
-- Without a path value, it maps to the class base path.
-- Here, that means `POST /api/v1/customers`.
-- It is shorthand for `@RequestMapping(method = RequestMethod.POST, value = ...)`.
-
-### 2. Get Customer By ID
-
-- Annotation: `@GetMapping("/{id}")`
-- Final path: `GET /api/v1/customers/{id}`
-- Method parameter: `@PathVariable Long id`
-  - Extracts the `id` segment from the URL.
-- Response:
-  - Uses `ResponseEntity.ok(response)`.
-  - Returns HTTP `200 OK` with customer data.
-
-### 3. Update Customer
-
-- Annotation: `@PutMapping("/{id}")`
-- Final path: `PUT /api/v1/customers/{id}`
-- Method parameters:
-  - `@PathVariable Long id`
-  - `@Valid @RequestBody CustomerRequestDTO customerRequestDTO`
-- Response:
-  - Uses `ResponseEntity.ok(response)`.
-  - Returns HTTP `200 OK` with updated customer data.
-
-### CategoryServiceImpl Notes
+### Controller Pattern Used
 
 ```java
-Optional.of(request.getName())       // 1. wrap the raw name String (not the whole DTO)
-    .map(String::trim)               // 2. remove leading/trailing whitespace
-    .filter(name -> !name.isBlank()) // 3. if blank after trim → empty Optional → orElseThrow
-    .filter(name -> !categoryRepository.existsByNameIgnoreCase(name)) // 4. if duplicate → empty Optional → orElseThrow
-    .map(name -> {                   // 5. build Category entity
-        Category c = new Category();
-        c.setName(name);
-        return c;
-    })
-    .map(categoryRepository::save)   // 6. persist to DB, returns saved entity with generated ID
-    .map(saved -> new CategoryResponseDTO(saved.getId(), saved.getName())) // 7. map to response
-    .orElseThrow(() -> new DuplicateResourceException(...)); // if any filter returned empty
+@PostMapping
+public ResponseEntity<ResourceResponseDTO> create(
+        @Valid @RequestBody ResourceRequestDTO request) {
+    ResourceResponseDTO response = service.create(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+}
 ```
+
+```java
+@GetMapping("/{id}")
+public ResponseEntity<ResourceResponseDTO> findById(@PathVariable Long id) {
+    return ResponseEntity.ok(service.findById(id));
+}
+```
+
+```java
+@GetMapping("/search")
+public ResponseEntity<ResourceResponseDTO> searchByName(@RequestParam String name) {
+    return ResponseEntity.ok(service.searchByName(name));
+}
+```
+
+### Validation and Error Handling Flow
+
+1. `@Valid` validates request DTO fields.
+2. Service throws domain exceptions (`InvalidRequestException`, `ResourceNotFoundException`, `DuplicateResourceException`, `BusinessRuleException`).
+3. [GlobalExceptionHandler](src/main/java/se/lexicon/ecommerce/exception/GlobalExceptionHandler.java) converts them into consistent HTTP responses.
+4. `MethodArgumentNotValidException` is handled for validation failures (HTTP `400`).

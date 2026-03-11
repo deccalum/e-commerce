@@ -12,6 +12,13 @@ import se.lexicon.ecommerce.dto.request.OrderRequestDTO;
 import se.lexicon.ecommerce.dto.response.OrderResponseDTO;
 import se.lexicon.ecommerce.service.OrderService;
 
+/**
+ * Controller for managing orders.
+ * Provides endpoints for creating orders.
+ * 
+ * @Valid triggers Jakarta Bean Validation on the bound DTO.
+ * @RequestBody binds the incoming JSON to the DTO and applies validation.
+ */
 @RestController
 @RequestMapping("/api/v1/orders")
 public class OrderController {
@@ -22,6 +29,12 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    /**
+     * Places a new order.
+     *
+     * @param request order input payload
+     * @return created order and HTTP 201
+     */
     @PostMapping
     public ResponseEntity<OrderResponseDTO> createOrder(@Valid @RequestBody OrderRequestDTO request) {
         OrderResponseDTO response = orderService.placeOrder(request);

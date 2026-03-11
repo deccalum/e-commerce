@@ -14,7 +14,13 @@ import jakarta.validation.Valid;
 import se.lexicon.ecommerce.dto.request.CategoryRequestDTO;
 import se.lexicon.ecommerce.dto.response.CategoryResponseDTO;
 import se.lexicon.ecommerce.service.CategoryService;
-
+/**
+ * Controller for managing product categories.
+ * Provides endpoints for creating and retrieving categories.
+ * 
+ * @Valid triggers Jakarta Bean Validation on the bound DTO.
+ * @RequestBody binds the incoming JSON to the DTO and applies validation.
+ */
 @RestController
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
@@ -25,12 +31,23 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Creates a category.
+     *
+     * @param request category input payload
+     * @return created category and HTTP 201
+     */
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> createCategory(@Valid @RequestBody CategoryRequestDTO request) {
         CategoryResponseDTO response = categoryService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    /**
+     * Lists all categories.
+     *
+     * @return categories and HTTP 200
+     */
     @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> findAll() {
         List<CategoryResponseDTO> response = categoryService.findAll();

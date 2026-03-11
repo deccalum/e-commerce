@@ -6,10 +6,19 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 /**
- * Request DTO used to create or update customer data.
+ * Request DTO for creating or updating {@link se.lexicon.ecommerce.model.Customer}
+ * data, typically mapped to {@link se.lexicon.ecommerce.dto.response.CustomerResponseDTO}.
  *
  * Password is validated for basic strength and must be hashed in the service
  * layer before persistence.
+ *
+ * @param firstName customer first name
+ * @param lastName customer last name
+ * @param email customer email
+ * @param password raw password before hashing
+ * @param street customer street
+ * @param city customer city
+ * @param zipCode customer zip/postal code
  */
 
 public record CustomerRequestDTO(
