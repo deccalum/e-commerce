@@ -44,8 +44,44 @@
 - `@PostMapping`, `@GetMapping`, `@PutMapping`: map HTTP method + path to handler methods.
 - `@RequestBody`: binds JSON request body to a DTO.
 - `@Valid`: triggers Jakarta Bean Validation on the bound DTO.
+- `@Validated`: enables method parameter validation on controller methods (for example `@RequestParam`, `@PathVariable`).
 - `@PathVariable`: binds path values like `{id}`.
 - `@RequestParam`: binds query string values like `?name=keyboard`.
+- `@NotBlank`, `@Size`, `@Positive`, `@Email`, `@Pattern`: common constraint annotations used with `@Valid` or `@Validated`.
+
+### Validation Quick Guide
+
+Use `@Valid` when validating request body DTOs:
+
+```java
+@PostMapping
+public ResponseEntity<ResourceResponseDTO> create(
+        @Valid @RequestBody ResourceRequestDTO request) {
+    ...
+}
+```
+
+Use `@Validated` on the controller class when validating method parameters:
+
+```java
+@Validated
+@RestController
+@RequestMapping("/api/v1/products")
+public class ProductController {
+
+    @GetMapping("/search")
+    public ResponseEntity<ProductResponseDTO> searchByName(
+            @RequestParam @NotBlank @Size(max = 150) String name) {
+        ...
+    }
+}
+```
+
+Difference summary:
+
+1. `@Valid` validates object graphs (typically DTOs in `@RequestBody`).
+2. `@Validated` activates validation for method parameters like query params and path variables.
+3. Constraint annotations (`@NotBlank`, `@Size`, and others) define the actual validation rules.
 
 ### Controller Pattern Used
 
@@ -72,9 +108,19 @@ public ResponseEntity<ResourceResponseDTO> searchByName(@RequestParam String nam
 }
 ```
 
+```java
+@Validated
+@GetMapping("/search")
+public ResponseEntity<ResourceResponseDTO> searchByName(
+        @RequestParam @NotBlank @Size(max = 150) String name) {
+    return ResponseEntity.ok(service.searchByName(name));
+}
+```
+
 ### Validation and Error Handling Flow
 
 1. `@Valid` validates request DTO fields.
 2. Service throws domain exceptions (`InvalidRequestException`, `ResourceNotFoundException`, `DuplicateResourceException`, `BusinessRuleException`).
 3. [GlobalExceptionHandler](src/main/java/se/lexicon/ecommerce/exception/GlobalExceptionHandler.java) converts them into consistent HTTP responses.
 4. `MethodArgumentNotValidException` is handled for validation failures (HTTP `400`).
+5. Method-parameter validation errors are handled via `HandlerMethodValidationException` / `ConstraintViolationException` (HTTP `400`).
